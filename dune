@@ -2,6 +2,7 @@
  (name default)
  (deps))
 
+(vendored_dirs vendors)
 (dirs :standard \ node_modules)
 
 (rule
