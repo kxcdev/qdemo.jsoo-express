@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.module.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "types": [
+      "node",
+      "express"
+    ],
+    "incremental": true,
+    "isolatedModules": true,
+  },
+  "exclude": [
+    "jest.config.ts",
+    "**/*.spec.ts"
+  ],
+  "include": [
+    "**/*.ts"
+  ]
+}

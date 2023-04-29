@@ -1,0 +1,57 @@
+(alias
+ (name default)
+ (deps))
+
+(rule
+ (alias pack)
+ (target (dir _target))
+ (action
+  (progn
+   (no-infer (run rm -rf _target))
+   (run %{bin:npx} tsc -p tsconfig.app.json)
+   (no-infer (run mkdir -p _target))
+   (no-infer (run cp -aP %{workspace_root}/_dist/tsc/apps/main-entry/src/ _target/src/))))
+ (deps
+  %{workspace_root}/node_modules
+  (include dune-deps.inc)))
+
+(rule
+ (alias runtest)
+ (action
+  (progn (run %{bin:npx} jest apps/main-entry)))
+ (deps
+  %{workspace_root}/node_modules
+  (glob_files_rec *.spec.ts)
+  (glob_files_rec %{workspace_root}/tsconfig.*)
+  (glob_files_rec %{workspace_root}/jest.config.*)
+  (include dune-deps.inc)))
+
+(rule
+ (alias serve)
+ (target (dir _serve))
+ (deps
+  dist/main-entry-bundle.tar.gz)
+ (action
+  (progn
+   (run rm -rf _serve)
+   (run mkdir -p _serve)
+   (chdir _serve
+    (progn
+     (run tar xf %{deps}))))))
+
+(rule
+ (alias serve)
+ (deps _serve)
+ (action
+  (progn
+   (chdir _serve
+    (progn
+     (no-infer (run ./serve-noinit.sh)))))))
+
+(rule
+ (alias fresh-serve)
+ (deps
+  dist/main-entry-bundle.tar.gz)
+ (action
+  (progn
+   (run %{project_root}/scripts/with-tempdir.sh %{deps} serve.sh))))

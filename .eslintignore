@@ -1,0 +1,5 @@
+*.gen.*
+jest.config.js
+**/node_modules
+_dist
+_build

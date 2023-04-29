@@ -1,0 +1,33 @@
+(alias
+ (name default)
+ (deps))
+
+(dirs :standard \ node_modules)
+
+(rule
+ (alias init)
+ (enabled_if (and (not %{env:FROZEN_LOCKFILE=false}) (not %{env:PURE_LOCKFILE=false})))
+ (targets (dir node_modules))
+ (deps package.json yarn.lock)
+ (action
+  (progn
+  (no-infer (copy yarn.lock yarn.lock.old))
+  (run chmod +w yarn.lock)
+  (run yarn install)
+  (no-infer (copy yarn.lock yarn.lock.gen))
+  (no-infer (copy yarn.lock.old yarn.lock))
+  (no-infer (diff yarn.lock yarn.lock.gen)))))
+(rule
+ (alias init)
+ (enabled_if (and %{env:FROZEN_LOCKFILE=false} (not %{env:PURE_LOCKFILE=false})))
+ (targets (dir node_modules))
+ (deps package.json yarn.lock)
+ (action (run yarn install --frozen-lockfile)))
+(rule
+ (alias init)
+ (enabled_if %{env:PURE_LOCKFILE=false})
+ (targets (dir node_modules))
+ (deps package.json yarn.lock)
+ (action (run yarn install --pure-lockfile)))
+
+(rule (alias clean) (action (echo "running - dune build @clean\n")))

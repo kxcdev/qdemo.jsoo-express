@@ -1,0 +1,12 @@
+{
+  "name": "qdemo-jsoo-express-dist",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "serve": "node _target/src/main.js"
+  },
+  "dependencies": {
+    "express": "^4.17.17",
+    "tslib": "^2.5.0"
+  }
+}

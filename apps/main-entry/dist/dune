@@ -1,0 +1,21 @@
+(alias
+ (name default)
+ (deps))
+
+(rule
+ (alias pack)
+ (mode (promote (until-clean)))
+ (target main-entry-bundle.tar.gz)
+ (deps
+  ../_target/
+  %{workspace_root}/node_modules
+  %{project_root}/yarn.lock
+  (:extra package.json (glob_files *.sh))
+  (sandbox preserve_file_kind))
+ (action
+  (progn
+   (no-infer (copy %{project_root}/yarn.lock yarn.lock))
+   (run tar -C .. -cf %{target}.tar _target)
+   (run tar -rf %{target}.tar yarn.lock %{extra})
+   (with-stdout-to %{target}
+    (run gzip -c %{target}.tar)))))

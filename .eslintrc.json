@@ -1,0 +1,38 @@
+{
+  "root": true,
+  "extends": ["plugin:prettier/recommended", "eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "prettier/prettier": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "prefer-const": "warn"
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": [],
+      "rules": {
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          {
+            "argsIgnorePattern": "^_",
+            "varsIgnorePattern": "^_",
+            "caughtErrorsIgnorePattern": "^_",
+            "destructuredArrayIgnorePattern": "^_"
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": [],
+      "rules": {}
+    }
+  ]
+}

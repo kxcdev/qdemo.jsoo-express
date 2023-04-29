@@ -1,0 +1,7 @@
+/node_modules/
+/_build/
+/_coverage/
+
+_dist/
+_target/
+_serve/
