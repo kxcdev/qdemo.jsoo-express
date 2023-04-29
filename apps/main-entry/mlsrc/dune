@@ -13,7 +13,8 @@
    Kxclib)))
 
 (env
- (_
+
+ (dev
   (js_of_ocaml
    (flags
     ((:standard \ --source-map-inline --pretty)
@@ -23,4 +24,16 @@
      --no-inline))
    (link_flags
     ((:standard \ --source-map-inline --pretty)
-     --source-map)))))
+     --source-map))))
+
+ (release
+  (js_of_ocaml
+   (flags
+    ((:standard \ --source-map-inline --pretty)
+     --no-source-map
+     --target-env
+     browser ;; note that this is intentional even when we target nodejs
+     --opt=1))
+   (link_flags
+    ((:standard \ --source-map-inline --pretty)))
+   (compilation_mode whole_program))))
