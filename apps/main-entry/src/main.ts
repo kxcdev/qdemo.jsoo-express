@@ -14,6 +14,11 @@ app.get("/*", (req, res) => {
   res.status(status_code).send(body);
 });
 
+app.post("/*", (req, res) => {
+  const { status_code, body } = camlimpl.handle_post(req.path, req.body);
+  res.status(status_code).send(body);
+});
+
 const port = process.env.port || 4000;
 const server = app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
