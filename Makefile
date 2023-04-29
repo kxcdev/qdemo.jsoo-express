@@ -1,5 +1,6 @@
 .PHONY: default clean build test coverage
 .PHONY: init init-promote init-relaxed init-ci
+.PHONY: setup setup-ocaml setup-git
 .PHONY: post-init by-dune
 .PHONY: ci-prepare ci-build ci-test
 
@@ -7,6 +8,12 @@
 .PHONY: pack
 
 default: node_modules build test coverage
+
+setup: setup-git setup-ocaml
+setup-git:
+	git submodule update --init
+setup-ocaml:
+	opam install . -y --deps-only --with-test
 
 pack: pack-main-entry
 pack-main-entry: apps/main-entry/dist/main-entry-bundle.tar.gz
@@ -34,7 +41,7 @@ post-init:
 	rm -rf node_modules
 	cp -aP _build/default/node_modules/ node_modules/
 
-ci-prepare: init-ci
+ci-prepare: setup-ocaml init-ci
 ci-build: build pack
 ci-test: test coverage
 
