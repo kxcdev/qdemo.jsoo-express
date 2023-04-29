@@ -10,7 +10,9 @@
    (no-infer (run rm -rf _target))
    (run %{bin:npx} tsc -p tsconfig.app.json)
    (no-infer (run mkdir -p _target))
-   (no-infer (run cp -aP %{workspace_root}/_dist/tsc/apps/main-entry/src/ _target/src/))))
+   (no-infer (run mkdir -p _target/mlsrc))
+   (no-infer (run cp -aP %{workspace_root}/_dist/tsc/apps/main-entry/src/ _target/src/))
+   (no-infer (copy %{dep:mlsrc/server_main.bc.js} _target/mlsrc/server_main.bc.js))))
  (deps
   %{workspace_root}/node_modules
   (include dune-deps.inc)))

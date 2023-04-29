@@ -1,0 +1,26 @@
+(executables
+ (names server_main)
+ (libraries
+  prr
+  kxclib
+  kxclib.jsoo)
+ (preprocess
+  (pps js_of_ocaml-ppx))
+ (modes byte js)
+ (flags
+  (:standard
+   -open
+   Kxclib)))
+
+(env
+ (_
+  (js_of_ocaml
+   (flags
+    ((:standard \ --source-map-inline --pretty)
+     --source-map
+     --target-env
+     browser ;; note that this is intentional even when we target nodejs
+     --no-inline))
+   (link_flags
+    ((:standard \ --source-map-inline --pretty)
+     --source-map)))))

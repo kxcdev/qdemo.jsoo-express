@@ -1,11 +1,17 @@
 import express from "express";
 import { answerForPing } from "./lib/ping-pong";
+import * as camlimpl from "../mlsrc/server_main.bc";
 
 const app = express();
 app.use(express.json({ strict: false }));
 
 app.get("/_ping", (req, res) => {
   res.send(answerForPing());
+});
+
+app.get("/*", (req, res) => {
+  const { status_code, body } = camlimpl.handle_get(req.path);
+  res.status(status_code).send(body);
 });
 
 const port = process.env.port || 4000;
