@@ -6,6 +6,8 @@ A quick demo for the Js_of_ocaml + Node.js express stack
 - please note that currently there's no jsoo part involved yet
 
 ## Get started
+- you will need to setup git submodules correctly first.
+  this can usually be achieved by running `git submodule update --init`
 - you may need/want to run `make init` first
 - try run `make serve-main-entry`
   - which will serve the express app under `apps/main-entry`
