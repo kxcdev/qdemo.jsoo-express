@@ -18,9 +18,19 @@ describe("main-entry e2e-api", () => {
     expect(res.body).toStrictEqual({ message: "hello?" });
   });
   it("handles POST requests", async () => {
-    const res = await request(app).post("/addxy").send({ x: 3, y: 5 });
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toStrictEqual({ result: 8 });
+    {
+      const res = await request(app).post("/addxy").send({ x: 3, y: 5 });
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toStrictEqual({ result: 8 });
+    }
+
+    {
+      const res = await request(app).post("/addxy").send({ a: 3, b: 5 });
+      expect(res.statusCode).toEqual(400);
+      expect((res.body as { message: string }).message).toContain(
+        "bad request"
+      );
+    }
   });
   it("handles 404 (GET)", async () => {
     const res = await request(app).get("/it-should-not-exists").send();
