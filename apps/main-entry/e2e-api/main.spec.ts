@@ -1,8 +1,13 @@
 import request from "supertest";
 import { app } from "../src/main";
 import { describe } from "node:test";
+import { coverage_helper } from "../mlsrc/server_main.bc";
 
 describe("main-entry e2e-api", () => {
+  afterAll(() => {
+    coverage_helper.write_coverage_data();
+    coverage_helper.reset_counters();
+  });
   it("ping pong", async () => {
     const res = await request(app).get("/_ping").send();
     expect(res.statusCode).toEqual(200);

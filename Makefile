@@ -14,12 +14,20 @@ pack-main-entry: apps/main-entry/dist/main-entry-bundle.tar.gz
 build: pack
 
 test:
-	dune runtest --no-buffer
+	dune runtest -f --no-buffer
 
 coverage:
-	-@$(MAKE) test
 	rm -rf _coverage
+	-dune runtest -f --instrument-with bisect_ppx --no-buffer
+	@(cd _build/default && \
+	  mkdir -p _coverage/ocaml/coverage-files && \
+	  find . | grep -E 'bisect.+[.]coverage$$' | xargs -I{} cp {} _coverage/ocaml/coverage-files)
+	@(cd _build/default && \
+	  bisect-ppx-report html -o _coverage/ocaml _coverage/ocaml/coverage-files/*)
 	-(cd _build/default && npx jest --coverage)
+	@echo ">>> OCaml coverage:"
+	@(cd _build/default && \
+	  bisect-ppx-report summary _coverage/ocaml/coverage-files/*)
 	cp -aP _build/default/_coverage _coverage
 
 post-init:

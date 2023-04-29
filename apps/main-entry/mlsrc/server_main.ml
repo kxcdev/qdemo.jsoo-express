@@ -33,10 +33,28 @@ module Resp = struct
     { status_code; body }
 end
 
+let coverage_helper_js = object%js
+  method reset_counters_js =
+    info "Bisect.Runtime.reset_counters";
+    Bisect.Runtime.reset_counters();
+    Pjv.undefined
+  method write_coverage_data_js =
+    info "Bisect.Runtime.write_coverage_data";
+    Bisect.Runtime.write_coverage_data();
+    Pjv.undefined
+  method get_coverage_data_js =
+    info "Bisect.Runtime.get_coverage_data";
+    Bisect.Runtime.get_coverage_data ()
+    >? Pjv.of_string
+    |? Pjv.null
+  end [@@coverage off]
+
 let () =
   info "%s loaded" __FILE__;
 
   object%js
+
+    val coverage_helper_js = coverage_helper_js
 
     val handle_get_ =
       fun path_js ->

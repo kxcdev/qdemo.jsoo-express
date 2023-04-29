@@ -1,11 +1,13 @@
 (executables
  (names server_main)
  (libraries
+  bisect_ppx.runtime
   prr
   kxclib
   kxclib.jsoo)
  (preprocess
   (pps js_of_ocaml-ppx))
+ (instrumentation (backend bisect_ppx))
  (modes byte js)
  (flags
   (:standard
