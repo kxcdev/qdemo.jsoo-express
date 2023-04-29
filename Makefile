@@ -16,8 +16,11 @@ build: pack
 test:
 	dune runtest --no-buffer
 
-coverage: node_modules
-	npx jest --coverage
+coverage:
+	-@$(MAKE) test
+	rm -rf _coverage
+	-(cd _build/default && npx jest --coverage)
+	cp -aP _build/default/_coverage _coverage
 
 post-init:
 	rm -rf node_modules
@@ -50,6 +53,7 @@ clean:
 	@dune clean || echo "info: dune clean failed but not a problem"
 	rm -rf _dist
 	rm -rf _build
+	rm -rf _coverage
 	rm -rf node_modules
 
 serve-main-entry: pack-main-entry by-dune
