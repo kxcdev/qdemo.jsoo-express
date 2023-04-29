@@ -1,6 +1,6 @@
 # qdemo.jsoo-express
 
-A quick demo for the Js_of_ocaml + Node.js express stack
+A quick demo for the Js_of_ocaml + Node.js/Express.js stack
 
 ## Get started
 - you will need to setup git submodules correctly first.

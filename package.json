@@ -1,7 +1,7 @@
 {
   "name": "qdemo-jsoo-express",
   "version": "0.0.0",
-  "description": "A quick demo for the Js_of_ocaml + Node.js express stack",
+  "description": "A quick demo for the Js_of_ocaml + Node.js/Express.js stack",
   "repository": "https://github.com/kxcdev/qdemo.jsoo-express",
   "author": "KXC Members and Contributors <hello@kxc.inc>",
   "private": true,
