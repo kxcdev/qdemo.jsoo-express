@@ -16,3 +16,7 @@ A quick demo for the Js_of_ocaml + Node.js/Express.js stack
 - or `make coverage` to run tests with coverage report
   - note that we currently do not take stats on jsoo generated files
     as that would give too much false positives
+
+## License
+This project is licensed under the MIT license.
+See the `LICENSE` file for details.

@@ -4,7 +4,7 @@ synopsis: "A quick demo for the Js_of_ocaml + Node.js/Express.js stack"
 description: "A quick demo for the Js_of_ocaml + Node.js/Express.js stack"
 maintainer: ["Haochen Xie <hx@kxc.io>" "KXC Members <info@kxc.io>"]
 authors: ["Haochen Xie" "KXC Members and Contributors"]
-license: "private"
+license: "MIT"
 homepage: "https://github.com/kxcdev/qdemo.jsoo-express"
 bug-reports: "https://github.com/kxcdev/qdemo.jsoo-express/issues"
 depends: [

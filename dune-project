@@ -5,7 +5,7 @@
  (github kxcdev/qdemo.jsoo-express))
 (bug_reports "https://github.com/kxcdev/qdemo.jsoo-express/issues")
 
-(license private)
+(license MIT)
 (maintainers "Haochen Xie <hx@kxc.io>" "KXC Members <info@kxc.io>")
 (authors "Haochen Xie" "KXC Members and Contributors")
 
