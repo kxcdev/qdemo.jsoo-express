@@ -13,7 +13,7 @@ setup: setup-git setup-ocaml
 setup-git:
 	git submodule update --init
 setup-ocaml:
-	opam install . -y --deps-only --with-test
+	opam install . -y --deps-only --with-test --with-doc
 
 pack: pack-main-entry
 pack-main-entry: apps/main-entry/dist/main-entry-bundle.tar.gz
