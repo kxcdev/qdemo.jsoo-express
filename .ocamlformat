@@ -1,0 +1,22 @@
+profile = default
+version = 0.25.1
+type-decl=sparse
+margin=72
+
+# dock-collection-brackets=false
+# break-separators=before
+
+# break-collection-expressions=wrap
+
+# sequence-style=before
+
+# break-fun-decl=smart
+# break-fun-decl=fit-or-vertical
+
+# let-binding-indent=2
+# parens-tuple=multi-line-only
+# break-fun-sig=fit-or-vertical
+# function-indent=2
+# function-indent-nested=always
+
+# type-decl-indent=2
