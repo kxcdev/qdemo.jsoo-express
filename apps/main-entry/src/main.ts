@@ -9,14 +9,26 @@ app.get("/_ping", (req, res) => {
   res.send(answerForPing());
 });
 
-app.get("/*", (req, res) => {
-  const { status_code, body } = camlimpl.handle_get(req.path);
-  res.status(status_code).send(body);
+app.get("/*", async (req, res) => {
+  const { status_code, body } = await camlimpl.handle_get(req.path);;
+  return res.status(status_code).send(body);
 });
 
-app.post("/*", (req, res) => {
-  const { status_code, body } = camlimpl.handle_post(req.path, req.body);
-  res.status(status_code).send(body);
+app.post("/*", async (req, res) => {
+  console.log(req.body)
+  try {
+    const { status_code, body } = await camlimpl.handle_post(req.path, req.body, req);
+    return res.status(status_code).send(body);
+  } catch (err) {
+    console.log("Error:" + (err as any));
+    if (err instanceof Error) {
+      if (err.name == "OpsticError") {
+        return res.status(500).send(err.name + ": " + err.message);
+      }
+    }
+    throw err;
+  }
+
 });
 
 /* istanbul ignore next */

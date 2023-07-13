@@ -6,8 +6,8 @@ describe("mlsrc/server_main correctness", () => {
     coverage_helper.write_coverage_data();
     coverage_helper.reset_counters();
   });
-  it("gives 404 on non-existing GET paths", () => {
-    const { status_code, body } = camlimpl.handle_get(
+  it("gives 404 on non-existing GET paths", async () => {
+    const { status_code, body } = await camlimpl.handle_get(
       "/this-path-should-not-exists-or-we-are-screwed"
     );
     expect(status_code).toEqual(404);

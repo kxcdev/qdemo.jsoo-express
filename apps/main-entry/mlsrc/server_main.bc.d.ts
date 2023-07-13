@@ -3,10 +3,11 @@ export type Http_response = {
   body: unknown;
 };
 
-export declare function handle_get(path: string): Http_response;
+export declare function handle_get(path: string): Promise<Http_response>;
 export declare function handle_post(
   path: string,
-  reqbody: unknown
+  reqbody: unknown,
+  express: express
 ): Http_response;
 
 export interface Bisect_ppx_jsoo_coverage_helper {
