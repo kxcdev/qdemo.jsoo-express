@@ -29,13 +29,13 @@ module Resp = struct
 
   let msg' ?status_code fmt = Format.kasprintf (msg ?status_code) fmt
 
-  let ret ?(status_code = 200) ?wrap body =
-    let body =
-      match wrap with
-      | Some (`in_field fname) -> `obj [ (fname, body) ]
-      | None -> body
-    in
-    { status_code; body }
+  (* let ret ?(status_code = 200) ?wrap body =
+     let body =
+       match wrap with
+       | Some (`in_field fname) -> `obj [ (fname, body) ]
+       | None -> body
+     in
+     { status_code; body } *)
 end
 
 let coverage_helper_js =
@@ -83,37 +83,18 @@ let () =
           let path = Pjv.to_string path_js in
           let reqbody = json_of_jsobj reqbody_js in
           verbose "handle_post[%s]@\n @[%a@]" path Json.pp_lit reqbody;
-          (match path with
-          | "/adder" ->
-              Opstic.Monad.then_
-                (fun () ->
-                  Opstic.Server.handle_request server ~path reqbody
-                    reqbody_js)
-                (function
-                  | Ok body -> return { status_code = 200; body }
-                  | Error err ->
-                      return
-                        {
-                          status_code = 500;
-                          body = `str (Opstic.Monad.error_to_string err);
-                        })
-          | "/hello" ->
-              Opstic.Monad.return
-                { status_code = 200; body = `str "hello" }
-          | "/addxy" -> (
-              match
-                reqbody |> Jv.(pump_field "y" &> pump_field "x")
-              with
-              | `obj [ ("x", `num x); ("y", `num y) ] ->
-                  verbose "/addxy parsed x=%f, y=%f" x y;
+          Opstic.Monad.then_
+            (fun () ->
+              Opstic.Server.handle_request server ~path reqbody
+                reqbody_js)
+            (function
+              | Ok body -> return { status_code = 200; body }
+              | Error err ->
                   return
-                    (Resp.ret ~wrap:(`in_field "result")
-                       (`num (x +. y)))
-              | _ ->
-                  return
-                    (Resp.msg ~status_code:400 (Json.unparse reqbody))
-                  (* {|bad request. example: { "x": 1, "y": 2 }|} *))
-          | _ -> return (Resp.msg ~status_code:404 "path not found"))
+                    {
+                      status_code = 500;
+                      body = `str (Opstic.Monad.error_to_string err);
+                    })
           |> to_promise
     end
   in
@@ -125,30 +106,31 @@ open Opstic
 
 let%global g =
   let rec loop =
-    b#args = "/adder" => a :: `obj (("x", `num __):: ("y", `num __) :: __ );
-    a
-    *>> ( (a#ans ==> b :: `obj [ ("ans", `num __) ];
+    cli#args = "/adder"
+    => srv :: `obj (("x", `num __) :: ("y", `num __) :: __);
+    srv
+    *>> ( (srv#ans ==> cli :: `obj [ ("ans", `num __) ];
            loop),
-          a#err ==> b :: `obj [ ("msg", `str __) ] )
+          srv#err ==> cli :: `obj [ ("msg", `str __) ] )
   in
   loop
 
-let spec = [%project_global g a]
+let spec = [%project_global g srv]
 
 let () =
   let open Opstic.Comm in
-  let rec loop (`b (`args ((x, y, _), ep))) =
+  let rec loop acc (`cli (`args ((x, y, _), ep))) =
     if x > 0. && y > 0. then
-      let* ep = send ep (fun x -> x#b#ans) (x +. y) in
+      let* ep = send ep (fun x -> x#cli#ans) (x +. y +. acc) in
       let* vars = receive ep in
-      loop vars
+      loop acc vars
     else
       let* ep =
         send ep
-          (fun x -> x#b#err)
+          (fun x -> x#cli#err)
           "Oops, both x and y should be positive"
       in
       close ep;
       return ()
   in
-  start_service server spec loop
+  start_service server spec (loop 0.0)
