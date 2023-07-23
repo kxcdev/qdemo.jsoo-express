@@ -1,5 +1,5 @@
-import * as camlimpl from "./server_main.bc";
-import { coverage_helper } from "./server_main.bc";
+import * as camlimpl from "./server_main.bc.js";
+import { coverage_helper } from "./server_main.bc.js";
 
 describe("mlsrc/server_main correctness", () => {
   afterAll(() => {

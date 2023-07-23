@@ -1,6 +1,6 @@
 import express from "express";
 import { answerForPing } from "./lib/ping-pong";
-import * as camlimpl from "../mlsrc/server_main.bc";
+import * as camlimpl from "../mlsrc/server_main.bc.js";
 
 export const app = express();
 app.use(express.json({ strict: false }));

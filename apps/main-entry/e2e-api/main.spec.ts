@@ -1,6 +1,6 @@
 import request from "supertest";
 import { app } from "../src/main";
-import { coverage_helper } from "../mlsrc/server_main.bc";
+import { coverage_helper } from "../mlsrc/server_main.bc.js";
 
 describe("main-entry e2e-api", () => {
   afterAll(() => {
